@@ -1,8 +1,9 @@
 const router = require('express').Router()
+const path = require('path');
 const fs = require('fs');
 
 router.get('/users', (req, res) => {
-  fs.readFile('./data/users.json', {encoding: 'utf8'}, (err, data) => {
+  fs.readFile(path.join ('data/users.json'), {encoding: 'utf8'}, (err, data) => {
     if (err) {
       res.status(500).send(err)
     } else {
@@ -13,12 +14,12 @@ router.get('/users', (req, res) => {
 })
 
 router.get('/users/:id', (req, res) => {
-    fs.readFile('./data/users.json', {encoding: 'utf8'}, (err, data) => {
+    fs.readFile(path.join('data/users.json'), {encoding: 'utf8'}, (err, data) => {
       if (err) {
-        res.status(500).send(err)
+        res.status(500).send(err.message)
       } else {
         const users = JSON.parse(data)
-        const currentUser = users.find(function (currentValue) {
+        const currentUser = users.find(currentValue=>{
           return currentValue._id === req.params.id
         })
         if (currentUser) {
