@@ -5,7 +5,7 @@ const fs = require('fs');
 router.get('/users', (req, res) => {
   fs.readFile(path.join( 'data', 'users.json'), {encoding: 'utf8'}, (err, data) => {
     if (err) {
-      res.status(500).send(err)
+      res.status(500).send({"message": err.message})
     } else {
       const users = JSON.parse(data)
       res.send(users)

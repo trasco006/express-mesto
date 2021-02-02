@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 
 router.get('/cards', (req, res) => {
-    fs.readFile(path.join( 'data', 'users.json'), {encoding: 'utf8'}, (err, data) => {
+    fs.readFile(path.join( 'data', 'cards.json'), {encoding: 'utf8'}, (err, data) => {
       if (err) {
         res.status(500).send({ "message": err.message })
       } else {
