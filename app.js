@@ -19,15 +19,15 @@ mongoose.connection.on('error', () => {
 })
 
 
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(bodyParser.json());
 app.use((req, res, next) => {
   req.user = {
-    _id: '602170289c6b4110907cc648'
+    _id: '60258e30d7bc6a145ce71087'
   };
   next();
 });
-app.use(bodyParser.json());
-
 app.use('/', userRoutes);
 
 app.listen(PORT, () => {

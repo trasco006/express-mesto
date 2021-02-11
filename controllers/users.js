@@ -9,7 +9,6 @@ const getUsers = (req, res) => {
       res.status(500).send(err)
     })
 }
-
 const getProfile = (req, res) => {
   const id = req.params.userId
   User.findOne({_id: id})
@@ -25,7 +24,6 @@ const getProfile = (req, res) => {
       res.status(500).send(err)
     })
 }
-
 const createUser = (req, res) => {
   const {body} = req;
   User.countDocuments({})
@@ -36,6 +34,19 @@ const createUser = (req, res) => {
     })
     .catch(err => res.status(200).send(err))
 }
-module.exports = {getUsers, getProfile, createUser}
+const updateUserProfile = (req, res) => {
+  const {body} = req;
+  User.findByIdAndUpdate({_id: req.user._id}, {name: body.name, about: body.about})
+    .then(user => res.send({ data: user }))
+    .catch(err => res.status(500).send(err))
+}
+const updateUserAvatar = (req, res) => {
+  const {body} = req;
+  User.findByIdAndUpdate({_id: req.user._id}, {avatar: body.avatar})
+    .then(user => res.send({ data: user }))
+    .catch(err => res.status(500).send(err))
+}
+
+module.exports = {getUsers, getProfile, createUser, updateUserAvatar, updateUserProfile}
 
 
