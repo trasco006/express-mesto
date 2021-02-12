@@ -5,31 +5,31 @@ const cardSchema = new mongoose.Schema({
     type: String,
     required: true,
     maxlength: 30,
-    minlength: 2
+    minlength: 2,
   },
   link: {
     type: String,
     required: true,
-    match:  /((http)|(https)):\/\/.+/
+    match: /((http)|(https)):\/\/.+\..+/,
   },
   owner: {
     required: false,
     type: mongoose.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
   },
   likes: {
     type: [{
       type: mongoose.Types.ObjectId,
-      ref: "User"
+      ref: 'User',
     }],
     default: [],
-    required: true
+    required: true,
   },
   createdAt: {
     required: true,
     type: Date,
-    default: Date.now
-  }
-})
+    default: Date.now,
+  },
+});
 
-module.exports = mongoose.model('card', cardSchema)
+module.exports = mongoose.model('card', cardSchema);
