@@ -5,22 +5,22 @@ const userSchema = new mongoose.Schema({
     type: String,
     maxlength: 30,
     minlength: 2,
-    required: true
+    required: true,
   },
   about: {
     type: String,
     maxlength: 30,
     minlength: 2,
-    required: true
+    required: true,
   },
   avatar: {
     type: String,
     required: true,
-    match: /((http)|(https)):\/\/.+/
+    match: /((http)|(https)):\/\/.+\..+/,
   },
   id: {
-    type: String
-  }
-})
+    type: String,
+  },
+});
 
-module.exports = mongoose.model('user', userSchema)
+module.exports = mongoose.model('user', userSchema);

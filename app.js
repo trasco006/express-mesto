@@ -1,35 +1,32 @@
 const express = require('express');
-const path = require('path');
 const mongoose = require('mongoose');
-const userRoutes = require('./routes/router');
 const bodyParser = require('body-parser');
-const {PORT = 3000} = process.env;
+const helmet = require('helmet');
+const userRoutes = require('./routes/router');
+
+const { PORT = 3000 } = process.env;
 const app = express();
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
   useCreateIndex: true,
-  useFindAndModify: false
+  useFindAndModify: false,
 });
 mongoose.connection.on('open', () => {
-  console.log('DB connected!')
-})
+});
 mongoose.connection.on('error', () => {
-  console.log('error connecting DB!')
-})
-
+});
 
 // app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(helmet());
 app.use(bodyParser.json());
 app.use((req, res, next) => {
   req.user = {
-    _id: '60258e30d7bc6a145ce71087'
+    _id: '60258e30d7bc6a145ce71087',
   };
   next();
 });
 app.use('/', userRoutes);
 
 app.listen(PORT, () => {
-  console.log('Ссылка на сервер: localhost:' + PORT);
 });
