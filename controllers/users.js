@@ -6,7 +6,7 @@ const getUsers = (req, res) => {
       res.status(200).send(users);
     })
     .catch((err) => {
-      res.status(500).send(err);
+      res.status(500).send({ message: err.message });
     });
 };
 const getProfile = (req, res) => {
@@ -32,15 +32,21 @@ const createUser = (req, res) => {
     .then((count) => {
       User.create({ ...body, id: count })
         .then((user) => res.status(200).send(user))
-        .catch((err) => res.status(500).send(err));
+        .catch((err) => {
+          if (err.name === 'ValidationError') {
+            res.status(400).send({ message: err.message });
+          } else {
+            res.status(500).send({ message: err.message });
+          }
+        });
     })
-    .catch((err) => res.status(200).send(err));
+    .catch((err) => res.status(500).send({ message: err.message }));
 };
 const updateUserProfile = (req, res) => {
   const { body } = req;
   User.findByIdAndUpdate({ _id: req.user._id }, { name: body.name, about: body.about })
     .orFail(() => {
-      new Error('DocumentNotFoundError');
+      Error('DocumentNotFoundError');
     })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
@@ -57,7 +63,7 @@ const updateUserAvatar = (req, res) => {
   const { body } = req;
   User.findByIdAndUpdate({ _id: req.user._id }, { avatar: body.avatar })
     .orFail(() => {
-      new Error('DocumentNotFoundError');
+      Error('DocumentNotFoundError');
     })
     .then((user) => res.send({ data: user }))
     .catch((err) => {

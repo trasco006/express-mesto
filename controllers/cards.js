@@ -3,22 +3,22 @@ const Card = require('../models/card');
 const getCards = (req, res) => {
   Card.find({})
     .then((cards) => res.status(200).send(cards))
-    .catch((err) => res.status(500).send(err));
+    .catch((err) => res.status(500).send({ message: err.message }));
 };
 const addCard = (req, res) => {
   const { body } = req;
   Card.create(body)
     .then((card) => res.status(200).send(card))
-    .catch((err) => res.status(500).send(err));
+    .catch((err) => res.status(500).send({ message: err.message }));
 };
 const deleteCard = (req, res) => {
   Card.findOne({ _id: req.params.cardId })
     .orFail(() => {
-      new Error('DocumentNotFoundError');
+      Error('DocumentNotFoundError');
     })
     .then(() => {
       Card.deleteOne({ _id: req.params.cardId })
-        .then(res.status(200).send('Карточка удалена.'))
+        .then(res.status(200).send({ message: 'Карточка удалена.' }))
         .catch((err) => res.status(500).send(err));
     })
     .catch((err) => {
@@ -38,7 +38,7 @@ const likeCard = (req, res) => {
     { new: true },
   )
     .orFail(() => {
-      new Error('DocumentNotFoundError');
+      Error('DocumentNotFoundError');
     })
     .then((card) => {
       res.send(card);
@@ -60,7 +60,7 @@ const dislikeCard = (req, res) => {
     { new: true },
   )
     .orFail(() => {
-      new Error('DocumentNotFoundError');
+      Error('DocumentNotFoundError');
     })
     .then((card) => {
       res.send(card);
