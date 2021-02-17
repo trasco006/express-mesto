@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const userRoutes = require('./routes/router');
-
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { PORT = 3000 } = process.env;
 const app = express();
 
@@ -26,7 +26,9 @@ app.use((req, res, next) => {
   };
   next();
 });
+app.use(requestLogger);
 app.use('/', userRoutes);
+app.use(errorLogger);
 
 app.listen(PORT, () => {
 });
